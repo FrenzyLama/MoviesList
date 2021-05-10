@@ -13,10 +13,11 @@ class MoviesManager {
     var movies = [Movie]()
     var isLoading: Bool = false
     var error: NSError?
+    var movieCast = [Actor]()
     
     private let movieService: MovieService
     
-    init(movieService: MovieService = NetworkLayer.shared) {
+    init(movieService: MovieService = NetworkOperations.shared) {
         self.movieService = movieService
     }
     
@@ -29,7 +30,24 @@ class MoviesManager {
             case .success(let response):
                 print(response)
                 self.movies = response.results
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: notifikationKeyForUpdateUi), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: notificationKeyForUpdateMoviesList), object: nil)
+                
+            case .failure(let error):
+                print(error)
+                self.error = error as NSError
+            }
+        }
+    }
+    
+    func loadMovieDetails(id: Int) {
+        self.movieService.fetchMovieDetails(id: id) { [weak self] (result) in
+            guard let self = self else { return }
+            self.isLoading = false
+            switch result {
+            case .success(let response):
+                print(response)
+                self.movieCast = response.cast
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: notificationKeyForUpdateMovieDetailsUi), object: nil)
                 
             case .failure(let error):
                 print(error)

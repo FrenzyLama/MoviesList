@@ -1,5 +1,5 @@
 //
-//  NetworkLayer.swift
+//  NetworkOperations.swift
 //  MoviesList
 //
 //  Created by Gleb Ilchyshyn on 09.05.2021.
@@ -7,12 +7,9 @@
 //
 
 import Foundation
-import Combine
 
-
-class NetworkLayer: MovieService {
-    
-    static let shared = NetworkLayer()
+class NetworkOperations: MovieService {
+    static let shared = NetworkOperations()
     private init() {}
     
     private var baseURL = "https://api.themoviedb.org/3"
@@ -29,14 +26,12 @@ class NetworkLayer: MovieService {
         self.loadURLAndDecode(url: url, completion: completion)
     }
     
-    func fetchMovie(id: Int, completion: @escaping (Result<Movie, MovieAPIError>) -> ()) {
-        guard let url = URL(string: "\(baseURL)/movie/\(id)") else {
+    func fetchMovieDetails(id: Int, completion: @escaping (Result<Credits, MovieAPIError>) -> ()) {
+        guard let url = URL(string: "\(baseURL)/movie/\(String(id))/credits") else {
             completion(.failure(.invalidEndpoint))
             return
         }
-        self.loadURLAndDecode(url: url, params: [
-            "append_to_response": "videos,credits"
-        ], completion: completion)
+        self.loadURLAndDecode(url: url, completion: completion)
     }
     
     private func loadURLAndDecode<D: Codable>(url: URL, params: [String: String]? = nil, completion: @escaping (Result<D, MovieAPIError>) -> ()) {

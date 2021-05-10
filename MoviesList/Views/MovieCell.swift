@@ -9,15 +9,14 @@
 import UIKit
 
 class MovieCell: UICollectionViewCell, SelfIdentifing {
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var posterImage: UIImageView!
     @IBOutlet weak var titleText: UILabel!
     var releaseYear: String?
+    var id: Int?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     var imageURL: URL? {
@@ -48,8 +47,9 @@ class MovieCell: UICollectionViewCell, SelfIdentifing {
     func prepare(movie: Movie) {
         print(movie)
         titleText.text = movie.title
-        imageURL = URL(string: NetworkLayer.shared.posterBaseUrl + movie.poster)
+        imageURL = URL(string: NetworkOperations.shared.posterBaseUrl + movie.poster!)
         releaseYear = movie.yearText
+        id = movie.id
     }
 }
 

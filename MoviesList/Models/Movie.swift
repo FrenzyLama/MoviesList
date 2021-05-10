@@ -13,16 +13,16 @@ struct Wrapper: Codable, Hashable {
 }
 
 struct Movie: Codable, Hashable {
-    let title: String
-    let poster: String
-    let backdropPath: String
+    let title: String?
+    let poster: String?
     let releaseDate: String?
+    let id: Int?
     
     enum CodingKeys: String, CodingKey{
         case title
         case poster = "poster_path"
-        case backdropPath = "backdrop_path"
         case releaseDate = "release_date"
+        case id
     }
     
     var yearText: String {
@@ -44,5 +44,8 @@ struct Movie: Codable, Hashable {
         return formatter
     }()
 }
+
+
+
 
 

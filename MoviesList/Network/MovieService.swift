@@ -8,14 +8,15 @@
 
 import Foundation
 
+let notificationKeyForUpdateMovieDetailsUi = "UpdateMovieUi"
+let notificationKeyForUpdateMoviesList = "UpdateUi"
+
 protocol MovieService {
         func fetchMovies(from endpoint: Endpoints, completion: @escaping (Result<Wrapper, MovieAPIError>) -> ())
-        func fetchMovie(id: Int, completion: @escaping (Result<Movie, MovieAPIError>) -> ())
+        func fetchMovieDetails(id: Int, completion: @escaping (Result<Credits, MovieAPIError>) -> ())
 }
 
 enum Endpoints: String {
-    var id: String { rawValue }
-    
     case popular
     case nowPlaying = "now_playing"
     
